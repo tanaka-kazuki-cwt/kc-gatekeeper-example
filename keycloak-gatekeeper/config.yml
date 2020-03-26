@@ -1,0 +1,30 @@
+# host.docker.internalでホストマシンを指す（Macのみ）。hostsファイルに事前に書く必要あり。
+# Keycloakサーバ
+discovery-url: http://host.docker.internal:8888/auth/realms/WordPress
+
+# Clients設定に応じて書く。今回はrealm-export.jsonと一致
+client-id: gatekeeper-api
+client-secret: '123456'
+
+listen: 0.0.0.0:3000
+
+# Gatekeeperサーバ。リダイレクト時に使うため、コンテンツが存在しないリソースを指定しておく
+redirection-url: http://host.docker.internal:8880
+encryption-key: 1234567890123456
+enable-session-cookies: true
+secure-cookie: false
+
+# 例：icp-webをローカル起動時にポート8880で立ち上げて試した場合。（アプリケーションサーバ）
+upstream-url: http://host.docker.internal:8880
+
+upstream-keepalives: true
+skip-upstream-tls-verify: true
+scopes: []
+enable-security-filter: true
+headers:
+  myheader_name: my_header_value
+resources:
+  # リソース全てに対して
+  - uri: /*
+    methods:
+      - GET
